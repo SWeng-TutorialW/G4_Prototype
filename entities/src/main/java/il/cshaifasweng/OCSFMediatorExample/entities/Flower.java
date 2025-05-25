@@ -11,9 +11,9 @@ public class Flower implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private static final long serialVersionUID = -5912738471623457890L;
+    private int id;
     private String name;
     private String type;
-    private int id;
     private double price;
 
     @Lob
@@ -21,10 +21,9 @@ public class Flower implements Serializable {
 
     public Flower() { }
 
-    public Flower(String name, String type, int id, double price, byte[] image) {
+    public Flower(String name, String type, double price, byte[] image) {
         this.name = name;
         this.type = type;
-        this.id = id;
         this.price = price;
         this.image = image;
     }
