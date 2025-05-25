@@ -48,6 +48,13 @@ public class App {
             session.save(flower4); session.flush();
             Flower flower5=new Flower("Orchid","Purple",25.75,null);
             session.save(flower5); session.flush();
+            Flower flowerPot1 = new Flower("Terracotta Pot", "Brown", 9.99, null);
+            session.save(flowerPot1); session.flush();
+            Flower flowerPot2 = new Flower("Ceramic Pot", "White", 14.49, null);
+            session.save(flowerPot2); session.flush();
+            Flower flowerPot3 = new Flower("Plastic Pot", "Green", 4.75, null);
+            session.save(flowerPot3); session.flush();
+
             tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
