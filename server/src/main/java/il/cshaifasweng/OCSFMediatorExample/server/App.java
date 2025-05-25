@@ -30,14 +30,15 @@ public class App {
     }
 
     public static void main(String[] args) throws IOException {
-        server = new SimpleServer(3000);
+        SimpleServer server = new SimpleServer(3000);
         server.listen();
 
         // Test DB logic
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
 
-            Flower flower = new Flower("Rose", "Red",6, 19.99, null);
+            Flower flower1 = new Flower("Rose", "Red",6, 19.99, null);
+            Flower flower2 = new Flower("Rose", "Red",6, 19.99, null);
             session.save(flower);
 
             tx.commit();
