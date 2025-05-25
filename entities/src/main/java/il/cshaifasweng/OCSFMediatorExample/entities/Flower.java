@@ -8,12 +8,16 @@ import java.io.Serializable;
 @Table(name ="flowers")
 
 public class Flower implements Serializable {
+    private static final long serialVersionUID = -5912738471623457890L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private static final long serialVersionUID = -5912738471623457890L;
+    @Column(name="ID")
     private int id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "type")
     private String type;
+    @Column(name = "price")
     private double price;
 
     @Lob
@@ -21,7 +25,7 @@ public class Flower implements Serializable {
 
     public Flower() { }
 
-    public Flower(String name, String type, double price, byte[] image) {
+    public Flower(String name, String type, double price,byte[] image) {
         this.name = name;
         this.type = type;
         this.price = price;
@@ -45,7 +49,7 @@ public class Flower implements Serializable {
     public double getPrice() {
         return price;
     }
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
     public byte[] getImage() {

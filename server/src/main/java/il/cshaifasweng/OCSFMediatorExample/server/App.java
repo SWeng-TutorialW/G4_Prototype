@@ -13,6 +13,7 @@ import org.hibernate.service.ServiceRegistry;
 import java.io.IOException;
 import java.util.Scanner;
 
+
 public class App {
 
     private static SessionFactory getSessionFactory() throws HibernateException {
@@ -37,17 +38,16 @@ public class App {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
 
-            Flower flower1 = new Flower("Rose", "Red", 19.99, null);
+            Flower flower1 = new Flower("Rose", "Red", 19.99,null);
             session.save(flower1);session.flush();
-            Flower flower2 = new Flower("Tulip", "Yellow", 14.50, null);
+            Flower flower2 = new Flower("Tulip", "Yellow", 14.50,null);
             session.save(flower2); session.flush();
-            Flower flower3 = new Flower("Lily", "White", 17.25, null);
+            Flower flower3 = new Flower("Lily", "White", 17.25,null);
             session.save(flower3); session.flush();
-            Flower flower4 = new Flower("Sunflower", "Golden", 12.00, null);
+            Flower flower4 = new Flower("Sunflower", "Golden", 12.00,null);
             session.save(flower4); session.flush();
             Flower flower5=new Flower("Orchid","Purple",25.75,null);
             session.save(flower5); session.flush();
-
             tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
