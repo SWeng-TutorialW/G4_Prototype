@@ -29,7 +29,11 @@ public class App {
 
         return configuration.buildSessionFactory(serviceRegistry);
     }
+    public static void updatePrice() throws HibernateException, IOException {
+        Scanner scanner = new Scanner(System.in);
 
+        String newprice = scanner.nextLine();
+    }
     public static void main(String[] args) throws IOException {
         SimpleServer server = new SimpleServer(3000);
         server.listen();

@@ -44,9 +44,45 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 		}
-		else if(msgString.contains("price")){
-			//update the price of flower with id x contained in the msgString
+		else if(msgString.contains("price")) {
+			int id = eval(msgString, msgString.indexOf("ID:") + 3);
+			int price = eval(msgString, msgString.indexOf("price:") + 6);
+
+			org.hibernate.Session session = HibernateUtil.getSessionFactory().openSession();
+			org.hibernate.Transaction tx = null;
+
+			try {
+				tx = session.beginTransaction();
+
+				Flower flower = session.get(Flower.class, id);
+				if (flower != null) {
+					flower.setPrice(price);
+					// session.update(flower); // optional
+					tx.commit();
+					client.sendToClient("Price updated successfully for flower ID: " + id);
+				} else {
+					client.sendToClient("Flower with ID " + id + " not found.");
+				}
+			} catch (Exception e) {
+				if (tx != null) tx.rollback();
+				e.printStackTrace();
+				try {
+					client.sendToClient("Error updating price.");
+				} catch (IOException ex) {
+					throw new RuntimeException(ex);
+				}
+			} finally {
+				session.close();
+			}
 		}
+	}
+	public int eval(String input,int index){
+		int num=0;
+		while(input.charAt(index) >= '0' && input.charAt(index) <= '9'){
+			num =  num*10 + input.charAt(index) - '0';
+			index++;
+		}
+		return num;
 	}
 	public void sendToAllClients(String message) {
 		try {
