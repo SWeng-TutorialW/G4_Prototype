@@ -21,15 +21,15 @@ public class Flower implements Serializable {
     private double price;
 
     @Lob
-    private byte[] image;
+    private String image_path;
 
     public Flower() { }
 
-    public Flower(String name, String type, double price,byte[] image) {
+    public Flower(String name, String type, double price,String image_path) {
         this.name = name;
         this.type = type;
         this.price = price;
-        this.image = image;
+        this.image_path = image_path;
     }
     public String getName() {
         return name;
@@ -52,10 +52,10 @@ public class Flower implements Serializable {
     public void setPrice(double price) {
         this.price = price;
     }
-    public byte[] getImage() {
-        return image;
+    public String getImagePath() {
+        return this.image_path;
     }
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setImagePath(String image_path) {
+        this.image_path = image_path;
     }
 }

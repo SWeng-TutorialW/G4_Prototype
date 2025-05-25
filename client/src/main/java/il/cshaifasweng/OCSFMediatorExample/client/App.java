@@ -51,7 +51,10 @@ public class App extends Application {
         client.closeConnection();
         super.stop();
     }
+    @Subscribe
+    public void onMessage(Object message){
 
+    }
     @Subscribe
     public void onWarningEvent(WarningEvent event) {
         Platform.runLater(() -> {
