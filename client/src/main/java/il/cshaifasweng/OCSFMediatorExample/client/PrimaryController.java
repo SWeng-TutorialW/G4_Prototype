@@ -4,9 +4,18 @@ import java.io.IOException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import il.cshaifasweng.OCSFMediatorExample.entities.Catalog;
+
 
 public class PrimaryController {
+	private Catalog catalog;
 
+	public void setCatalog(Catalog catalog) {
+		this.catalog = catalog;
+	}
+	public Catalog getCatalog() {
+		return catalog;
+	}
 	@FXML
 	void sendWarning(ActionEvent event) {
 		try {

@@ -12,8 +12,8 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
 public class SimpleServer extends AbstractServer {
-	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
-	private static Catalog catalog = new Catalog();
+	private ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
+	private Catalog catalog = new Catalog();
 
 	public SimpleServer(int port) {
 		super(port);
