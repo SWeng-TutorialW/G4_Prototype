@@ -24,7 +24,4 @@ public class Catalog implements Serializable {
     public List<Flower> getFlowers() {
         return flowers;
     }
-    public int getSize(){
-        return flowers.size();
-    }
 }

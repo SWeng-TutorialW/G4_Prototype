@@ -7,8 +7,7 @@ public class HibernateUtil {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            Configuration configuration = new Configuration().configure();
-            return configuration.buildSessionFactory();
+            return new Configuration().configure().buildSessionFactory();
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }

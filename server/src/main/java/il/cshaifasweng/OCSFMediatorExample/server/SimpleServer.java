@@ -11,20 +11,37 @@ import java.util.ArrayList;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import java.util.List;
+
+
 public class SimpleServer extends AbstractServer {
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
-	private static Catalog catalog = new Catalog();
+	private static Catalog catalog = new Catalog(new ArrayList<>());
 
 	public SimpleServer(int port) {
 		super(port);
-		//init catalog
+		catalog.setFlowers(getFlowerListFromDB());
+	}
+
+	private List<Flower> getFlowerListFromDB() {
+		List<Flower> flowerList;
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			flowerList = session.createQuery("from Flower", Flower.class).list();
+		} catch (Exception e) {
+			e.printStackTrace();
+			flowerList = new ArrayList<>();
+		}
+		return flowerList;
 	}
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		String msgString = msg.toString();
 
-		if(msgString.startsWith("add client")){
+		System.out.println("Recieved from client : " + msgString);
+		if (msgString.startsWith("add client")) {
 			SubscribedClient connection = new SubscribedClient(client);
 			SubscribersList.add(connection);
 			try {
@@ -33,57 +50,24 @@ public class SimpleServer extends AbstractServer {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-		}
-		else if(msgString.startsWith("remove client")){
-			if(!SubscribersList.isEmpty()){
-				for(SubscribedClient subscribedClient: SubscribersList){
-					if(subscribedClient.getClient().equals(client)){
-						SubscribersList.remove(subscribedClient);
-						break;
-					}
-				}
-			}
-		}
-		else if(msgString.contains("price")) {
-			int id = eval(msgString, msgString.indexOf("ID:") + 3);
-			int price = eval(msgString, msgString.indexOf("price:") + 6);
-
-			org.hibernate.Session session = HibernateUtil.getSessionFactory().openSession();
-			org.hibernate.Transaction tx = null;
-
+		} else if (msgString.equals("request_catalog")) {
+			List<Flower> flowerList = getFlowerListFromDB();
+			catalog = new Catalog(flowerList);
 			try {
-				tx = session.beginTransaction();
-
-				Flower flower = session.get(Flower.class, id);
-				if (flower != null) {
-					flower.setPrice(price);
-					// session.update(flower); // optional
-					tx.commit();
-					client.sendToClient("Price updated successfully for flower ID: " + id);
-				} else {
-					client.sendToClient("Flower with ID " + id + " not found.");
-				}
-			} catch (Exception e) {
-				if (tx != null) tx.rollback();
+				client.sendToClient(catalog);
+			} catch (IOException e) {
 				e.printStackTrace();
-				try {
-					client.sendToClient("Error updating price.");
-				} catch (IOException ex) {
-					throw new RuntimeException(ex);
-				}
-			} finally {
-				session.close();
 			}
+		} else if (msgString.startsWith("remove client")) {
+			if (!SubscribersList.isEmpty()) {
+				SubscribersList.removeIf(subscribedClient -> subscribedClient.getClient().equals(client));
+			}
+		} else if (msgString.contains("price")) {
+			// update the price logic goes here later
 		}
 	}
-	public int eval(String input,int index){
-		int num=0;
-		while(input.charAt(index) >= '0' && input.charAt(index) <= '9'){
-			num =  num*10 + input.charAt(index) - '0';
-			index++;
-		}
-		return num;
-	}
+
+
 	public void sendToAllClients(String message) {
 		try {
 			for (SubscribedClient subscribedClient : SubscribersList) {
