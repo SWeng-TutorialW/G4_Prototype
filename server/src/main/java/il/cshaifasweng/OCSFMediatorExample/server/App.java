@@ -42,9 +42,9 @@ public class App {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
 
-            Flower flower1 = new Flower("Rose", "Red", 19.99,null);
+            Flower flower1 = new Flower("White Lisi", "Lisianthus", 19.99,"white lisi.jpg");
             session.save(flower1);session.flush();
-            Flower flower2 = new Flower("Tulip", "Yellow", 14.50,null);
+            Flower flower2 = new Flower("Rosalina", "Rose", 14.50,null);
             session.save(flower2); session.flush();
             Flower flower3 = new Flower("Lily", "White", 17.25,null);
             session.save(flower3); session.flush();
